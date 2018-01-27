@@ -182,25 +182,20 @@
                 chunks = [];
                 var audioURL = window.URL.createObjectURL(blob);
 
-                console.log(audioURL);
-                console.log(blob);
-                typeof(blob);
-
-                var soundBlob = blob;
-
-                var fd = new FormData();
-
-                fd.append('fname', 'test.wav');
-                fd.append('data', soundBlob);
+                var form = new FormData();
+                form.append('file', blob, clipName);
+                form.append('title', "hi");
                 $.ajax({
-                    type: 'GET',
-                    url: '/speech',
-                    data: fd,
-                    processData: false,
-                    contentType: false
+                  type: 'POST',
+                  url: '/speech',
+                  data: form,
+                  cache: false,
+                  processData: false,
+                  contentType: false
                 }).done(function(data) {
                   console.log(data);
                 });
+
 
                 audio.src = audioURL;
 

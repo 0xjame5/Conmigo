@@ -383,10 +383,17 @@ def leave_rooms(newroom, username):
             room.user_leave(user)
     return jsonify(success=True)
 
-
 @app.route('/speech', methods=['GET', "POST"])
 def speech():
-    return "hello"
+
+    result = request.files['file'].filename
+
+    output = {
+        "success": True,
+        "result": result
+    }
+
+    return jsonify(output)
 
 
 if __name__ == '__main__':
