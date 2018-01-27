@@ -74,7 +74,6 @@
         </div>
     </nav>
     <div class="container" data-ng-controller="LogController">
-
         <div class="col-md-6" id="messages">
           <div data-ng-if="chat.messages[chat.currentRoom]" class="messages" data-ng-repeat="msg in chat.messages[chat.currentRoom]">
               <span style="font-size: 0.8em!important" class="text-muted"><i class="fa fa-clock-o"></i>&nbsp;<% msg.time %></span>&nbsp;
@@ -84,12 +83,25 @@
           </div>
         </div>
 
-        <div class="col-md-6 video-wrapper">
+        <div class="video-wrapper">
+          <div class="col-md-6">
+            <!-- <h2 style="float: right">This is your camera!</h2> -->
+            <video id="localVideo" style="float:right;max-width:50%;border: solid 3px #90CA0A;" autoplay muted></video>
+          </div>
+
+          <div class="col-md-6">
+            <video-player data-ng-repeat="peer in chat.peers[chat.currentRoom]">
+              <video autoplay style="float:right;max-width:50%;" id="<% peer.username %>" data-ng-src="<% chat.getVideo(peer.stream) %>"></video>
+          </video-player>
+          </div>
+        </div>
+
+        <!-- <div class="col-md-6 video-wrapper">
           <video id="localVideo" style="float:right;max-width:50%;border: solid 3px #90CA0A;" autoplay muted></video>
           <video-player data-ng-repeat="peer in chat.peers[chat.currentRoom]">
               <video autoplay style="float:right;max-width:50%;" id="<% peer.username %>" data-ng-src="<% chat.getVideo(peer.stream) %>"></video>
           </video-player>
-        </div>
+        </div> -->
     </div>
 
 
