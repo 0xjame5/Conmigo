@@ -1,50 +1,43 @@
-import os
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+from pydub import AudioSegment
 import speech_recognition as sr
-from multiprocessing.dummy import Pool
-pool = Pool(8)  # Number of concurrent threads
+
+
+def split_recording(raw_file_path, output_path, seg_lim=30000):
+
+    song = AudioSegment.from_wav(raw_file_path)
+
+    # get the first seg_lim milliseconds
+    song[:seg_lim].export("answer.wav", format="wav")
+
 
 with open("google_creds.json") as f:
     GOOGLE_CLOUD_SPEECH_CREDENTIALS = f.read()
 
-r = sr.Recognizer()
-files = os.listdir('parts/')
 
+def transcribe(output_path, to_lang="es"):
 
-def transcribe(data):
-    idx, file = data
-    name = "parts/" + file
-    print(name + " started")
-    # Load audio file
-    with sr.AudioFile(name) as source:
-        audio = r.record(source)
+    recognizer = sr.Recognizer()
+    with sr.AudioFile(output_path) as source:
+        audio = recognizer.record(source)
+
     # Transcribe audio file
-    text = r.recognize_google_cloud(
-        audio, credentials_json=GOOGLE_CLOUD_SPEECH_CREDENTIALS)
-    print(name + " done")
-    return {
-        "idx": idx,
-        "text": text
-    }
+    text = recognizer.recognize_google_cloud(
+        audio,
+        language=to_lang,
+        credentials_json=GOOGLE_CLOUD_SPEECH_CREDENTIALS
+    )
+
+    with open("transcript.txt", "w") as f:
+        f.write(text.encode("utf-8"))
 
 
-all_text = pool.map(transcribe, enumerate(files))
-pool.close()
-pool.join()
+if __name__ == '__main__':
 
-transcript = ""
-for t in sorted(all_text, key=lambda x: x['idx']):
-    total_seconds = t['idx'] * 30
-    # Cool shortcut from:
-    # https://stackoverflow.com/questions/775049/python-time-seconds-to-hms
-    # to get hours, minutes and seconds
-    m, s = divmod(total_seconds, 60)
-    h, m = divmod(m, 60)
+    raw_file_path = "raw.wav"
+    output_path = "answer.wav"
 
-    # Format time as h:m:s - 30 seconds of text
-    transcript = transcript + \
-        "{:0>2d}:{:0>2d}:{:0>2d} {}\n".format(h, m, s, t['text'])
-
-print(transcript)
-
-with open("transcript.txt", "w") as f:
-    f.write(transcript)
+    split_recording(raw_file_path, output_path)
+    transcribe(output_path)
