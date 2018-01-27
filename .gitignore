@@ -1,8 +1,8 @@
-/.idea/
-/.idea/*
-.idea
 .idea/*
 *.pyc
 *.DS_Store
 *.venv/
-*.idea/
+env
+venv
+.env
+.venv
