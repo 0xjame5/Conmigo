@@ -1,34 +1,39 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+from Queue import Queue
 import datetime
+from datetime import datetime
 import json
 import thread
 import time
+from os import path
 import uuid
-from Queue import Queue
-from datetime import datetime
 
-from flask import Flask, render_template, request, session, Response, \
+from flask import Flask, render_template, request, Response, \
     stream_with_context
+from werkzeug import secure_filename
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'asdf'
+app.config["SECRET_KEY"] = "asdf"
 app.debug = True
 heartbeat_interval = 10  # seconds
 
 
 class ExtensibleJSONEncoder(json.JSONEncoder):
     def default(self, obj):
-        if hasattr(obj, 'to_JSON'):
+        if hasattr(obj, "to_JSON"):
             return obj.to_JSON()
         return super(ExtensibleJSONEncoder, self).default(obj)
 
 
 def jsonify(*args, **kwargs):
     indent = None
-    status = kwargs.pop('_status', 200)
-    mime = kwargs.pop('_mime', 'application/json')
+    status = kwargs.pop("_status", 200)
+    mime = kwargs.pop("_mime", "application/json")
     data = args[0] if args else dict(kwargs)
 
-    if app.config['JSONIFY_PRETTYPRINT_REGULAR'] \
+    if app.config["JSONIFY_PRETTYPRINT_REGULAR"] \
        and not request.is_xhr:
         indent = 2
 
@@ -36,8 +41,7 @@ def jsonify(*args, **kwargs):
     return app.response_class(dump, status=status, mimetype=mime)
 
 
-
-# Override Flask's json encoder to check for to_JSON method on objects
+# Override Flask"s json encoder to check for to_JSON method on objects
 app.json_encoder = ExtensibleJSONEncoder
 
 
@@ -55,19 +59,19 @@ class WebRTCUser(object):
         self.messages = Queue()
 
     def __repr__(self):
-        return '<WebRTCUser %s %s>' % (self.id, self.username)
+        return "<WebRTCUser %s %s>" % (self.id, self.username)
 
     def add_stream(self, stream_id):
         self.streams[stream_id] = dict(queue=Queue())
 
     def emit(self, event=None, **data):
         if event:
-            data['event'] = event
-        payload = data.pop('_payload', None)
+            data["event"] = event
+        payload = data.pop("_payload", None)
         if not payload:
             payload = json.dumps(data)
-        if payload != '{"event": "heartbeat"}':
-            print 'Emitting %s to %s' % (payload, self)
+        if payload != "{'event': 'heartbeat'}":
+            print "Emitting %s to %s" % (payload, self)
         self.messages.put_nowait(payload)
 
     def emit_to_rooms(self, event, **data):
@@ -82,17 +86,17 @@ class WebRTCUser(object):
 
 
 class WebRTCRoom(object):
-    name = ''
-    encryption = ''
-    browser = ''
-    browser_version = ''
+    name = ""
+    encryption = ""
+    browser = ""
+    browser_version = ""
 
     def __init__(self, name):
         self.name = name
         self.users = []
 
     def __repr__(self):
-        return '<WebRTCRoom %s>' % self.name
+        return "<WebRTCRoom %s>" % self.name
 
     def user_join(self, user):
         print "User %s is joining %s" % (user, self.name)
@@ -101,7 +105,7 @@ class WebRTCRoom(object):
         self.users.append(user)
         user.rooms.append(self)
         print user.id
-        self.emit('user_join', _exclude=user.id,
+        self.emit("user_join", _exclude=user.id,
                   username=user.username,
                   room=self.name)
 
@@ -109,17 +113,17 @@ class WebRTCRoom(object):
         try:
             self.users.remove(user)
             user.rooms.remove(self)
-            self.emit('user_leave', _exclude=user.id,
+            self.emit("user_leave", _exclude=user.id,
                       disconnect=disconnect,
                       username=user.username)
         except:
             pass
 
     def emit(self, event, **data):
-        data['event'] = event
+        data["event"] = event
         payload = json.dumps(data)
-        exclude = data.pop('_exclude', None)
-        print 'Room %s emitting %s to %s exlcuding %s' % \
+        exclude = data.pop("_exclude", None)
+        print "Room %s emitting %s to %s exlcuding %s" % \
             (self.name, payload, self.users, exclude)
         for user in self.users:
             if exclude and user.id == exclude:
@@ -139,9 +143,9 @@ class WebRTC(object):
         self.users_by_username = dict()
 
     def get_room(self, room):
-        print 'Getting room ', room
+        print "Getting room ", room
         if room not in self.rooms:
-            print 'Room not found, creating.'
+            print "Room not found, creating."
             self.rooms[room] = WebRTCRoom(room)
         return self.rooms[room]
 
@@ -167,24 +171,24 @@ def event_stream(stream_id):
     connected = True
     user = rtc.users_by_stream[stream_id]
     try:
-        yield 'data: %s\n\n' % json.dumps(dict(event='hello', stream_id=stream_id))
+        yield "data: %s\n\n" % json.dumps(dict(event="hello", stream_id=stream_id))
     except:
-        print 'Error sending hello to %s' % stream_id
+        print "Error sending hello to %s" % stream_id
         connected = False
-        print 'Stream %s is disconnected' % stream_id
+        print "Stream %s is disconnected" % stream_id
         rtc.disconnected(stream_id)
         return
 
     while connected:
         message = user.messages.get(block=True, timeout=None)
-        if message != '{"event": "heartbeat"}':
-            print 'Sending %s to %s' % (message, stream_id)
+        if message != "{'event': 'heartbeat'}":
+            print "Sending %s to %s" % (message, stream_id)
         try:
-            yield 'data: %s\n\n' % message
+            yield "data: %s\n\n" % message
         except:
-            print 'socket Error sending message to %s' % stream_id
+            print "socket Error sending message to %s" % stream_id
             connected = False
-            print 'Stream %s is disconnected' % stream_id
+            print "Stream %s is disconnected" % stream_id
             rtc.disconnected(stream_id)
             return
 
@@ -193,7 +197,7 @@ def heartbeat(delay):
     """Heartbeat thread to monitor SSE streams"""
     while True:
         for user in rtc.users:
-            rtc.users[user].emit('heartbeat')
+            rtc.users[user].emit("heartbeat")
         time.sleep(delay)
 
 
@@ -204,20 +208,20 @@ thread.start_new_thread(heartbeat, (heartbeat_interval,))
 def before_request():
     stream_id = None
     user = None
-    if 'X-Stream-ID' in request.headers:
-        stream_id = request.headers['X-Stream-ID']
+    if "X-Stream-ID" in request.headers:
+        stream_id = request.headers["X-Stream-ID"]
         if stream_id in rtc.users:
             user = rtc.users[stream_id]
-    setattr(request, 'stream_id', stream_id)
-    setattr(request, 'webrtc_user', user)
+    setattr(request, "stream_id", stream_id)
+    setattr(request, "webrtc_user", user)
 
 
-@app.route('/')
+@app.route("/")
 def index():
-    return render_template('index.html')
+    return render_template("index.html")
 
 
-@app.route('/stream')
+@app.route("/stream")
 def stream():
     """SSE stream handler"""
     stream_id = uuid.uuid4().get_hex()
@@ -227,28 +231,28 @@ def stream():
                     mimetype="text/event-stream")
 
 
-@app.route('/debug')
+@app.route("/debug")
 def debug():
-    return render_template('debug.html', rtc=rtc)
+    return render_template("debug.html", rtc=rtc)
 
 
-@app.route('/set_username', methods=['POST'])
+@app.route("/set_username", methods=["POST"])
 def on_set_name():
-    print 'Set username', request.form
+    print "Set username", request.form
 
-    if len(request.form['username']) == 0:
+    if len(request.form["username"]) == 0:
         # TODO: more name validation
         return jsonify(dict(
-            error='Invalid username',
-            username=request.form['username']
+            error="Invalid username",
+            username=request.form["username"]
         ))
 
     # Verify username is not alread in use
     for id in rtc.users:
         user = rtc.users[id]
-        if user.username == request.form['username'] and \
+        if user.username == request.form["username"] and \
            user.id != request.stream_id:
-            return jsonify(error='Username already in use', _status=400)
+            return jsonify(error="Username already in use", _status=400)
 
     user = rtc.get_current_user()
 
@@ -259,10 +263,10 @@ def on_set_name():
     old_username = user.username
     if old_username:
         rtc.users_by_username[old_username] = None
-    rtc.users_by_username[request.form['username']] = user
-    user.username = request.form['username']
+    rtc.users_by_username[request.form["username"]] = user
+    user.username = request.form["username"]
     for room in user.rooms:
-        room.emit('username_change',
+        room.emit("username_change",
                   old_username=old_username,
                   username=user.username,
                   exclude=user.id)
@@ -270,12 +274,12 @@ def on_set_name():
     return jsonify(success=True)
 
 
-@app.route('/join_room', methods=['POST'])
+@app.route("/join_room", methods=["POST"])
 def on_join_room():
     """Join a webRTC room"""
-    print 'join_room', request.form
+    print "join_room", request.form
     # TODO: room name validation
-    room = rtc.get_room(request.form['room'])
+    room = rtc.get_room(request.form["room"])
     user = rtc.get_current_user()
     room.user_join(user)
     data = dict(
@@ -287,32 +291,32 @@ def on_join_room():
     for patron in room.users:
 
         if patron.id != user.id:
-            data['users'].append(dict(
+            data["users"].append(dict(
                 username=patron.username,
             ))
 
     return jsonify(data)
 
 
-@app.route('/leave_room', methods=['POST'])
+@app.route("/leave_room", methods=["POST"])
 def on_leave_room():
-    print 'leave_room', request.form
-    username = request.form['username']
-    room = request.form['room']
+    print "leave_room", request.form
+    username = request.form["username"]
+    room = request.form["room"]
     leave_room(room)
 
 
-@app.route('/room_info', methods=['POST'])
+@app.route("/room_info", methods=["POST"])
 def on_room_info():
-    print 'room_info', request.form
+    print "room_info", request.form
     user = rtc.get_current_user()
-    room = request.form['room']
-    encryption, browser, browser_version = '', '', ''
+    room = request.form["room"]
+    encryption, browser, browser_version = "", "", ""
     if room in encryption:
         encryption = rtc.encryption[room]
         browser = rtc.browser[room]
         browser_version = rtc.browser_version[room]
-    user.emit('receive_room_info',
+    user.emit("receive_room_info",
               encryption=encryption,
               browser=browser,
               browser_version=browser_version
@@ -320,43 +324,43 @@ def on_room_info():
     return jsonify(success=True)
 
 
-@app.route('/send_ice_candidate', methods=['POST'])
+@app.route("/send_ice_candidate", methods=["POST"])
 def on_send_ice_candidate():
-    print 'send_ice_candidate', request.form
+    print "send_ice_candidate", request.form
     sender = rtc.get_current_user()
-    user = rtc.users_by_username[request.form['username']]
-    user.emit('receive_ice_candidate',
-              candidate=request.form['candidate'],
+    user = rtc.users_by_username[request.form["username"]]
+    user.emit("receive_ice_candidate",
+              candidate=request.form["candidate"],
               username=sender.username
               )
     return jsonify(success=True)
 
 
-@app.route('/send_offer', methods=['POST'])
+@app.route("/send_offer", methods=["POST"])
 def on_send_offer():
-    print 'send_offer', request.form
+    print "send_offer", request.form
     sender = rtc.get_current_user()
-    user = rtc.users_by_username[request.form['username']]
-    user.emit('receive_offer',
-              sdp=request.form['sdp'],
+    user = rtc.users_by_username[request.form["username"]]
+    user.emit("receive_offer",
+              sdp=request.form["sdp"],
               username=sender.username
               )
     return jsonify(success=True)
 
 
-@app.route('/send_answer', methods=['POST'])
+@app.route("/send_answer", methods=["POST"])
 def on_send_answer():
-    print 'send_answer', request.form
+    print "send_answer", request.form
     sender = rtc.get_current_user()
-    user = rtc.users_by_username[request.form['username']]
-    user.emit('receive_answer',
-              sdp=request.form['sdp'],
+    user = rtc.users_by_username[request.form["username"]]
+    user.emit("receive_answer",
+              sdp=request.form["sdp"],
               username=sender.username
               )
     return jsonify(success=True)
 
 
-@app.route('/get_rooms', methods=['GET', 'POST'])
+@app.route("/get_rooms", methods=["GET", "POST"])
 def get_rooms():
     getRooms = []
     for room in rtc.rooms:
@@ -364,7 +368,7 @@ def get_rooms():
     return jsonify(getRooms)
 
 
-@app.route('/get_users_in_room/<room>', methods=['GET'])
+@app.route("/get_users_in_room/<room>", methods=["GET"])
 def get_users_in_room(room):
     get_users_in_room = []
     room = rtc.get_room(room)
@@ -373,29 +377,31 @@ def get_users_in_room(room):
     return jsonify(get_users_in_room)
 
 
-@app.route('/leave_other_rooms/<newroom>/<username>', methods=['GET'])
+@app.route("/leave_other_rooms/<newroom>/<username>", methods=["GET"])
 def leave_rooms(newroom, username):
     user = rtc.users_by_username[username]
-    # user.emit_to_rooms('user_leave');
+    # user.emit_to_rooms("user_leave");
     for room in rtc.rooms:
-        if(room != newroom):
+        if (room != newroom):
             room = rtc.get_room(room)
             room.user_leave(user)
     return jsonify(success=True)
 
-@app.route('/speech', methods=['GET', "POST"])
+
+@app.route("/speech", methods=["GET", "POST"])
 def speech():
 
-    result = request.files['file'].filename
-
+    result = request.files["file"]
     output = {
         "success": True,
-        "result": result
+        "file_name": result.filename
     }
+
+    result.save(path.join("procs", secure_filename("raw.wav")))
 
     return jsonify(output)
 
 
-if __name__ == '__main__':
-    context = ('cert.pem', 'key.pem')
-    app.run('0.0.0.0', ssl_context=context, debug=True, threaded=True)
+if __name__ == "__main__":
+    context = ("cert.pem", "key.pem")
+    app.run("0.0.0.0", ssl_context=context, debug=True, threaded=True)
