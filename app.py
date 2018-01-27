@@ -365,4 +365,4 @@ def leave_rooms(newroom, username):
 
 if __name__ == '__main__':
     context = ('cert.pem','key.pem')
-    app.run('0.0.0.0', ssl_context=context, debug=True)
+    app.run('0.0.0.0', ssl_context=context, debug=True, threaded=True)
