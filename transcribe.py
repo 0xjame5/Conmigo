@@ -1,22 +1,10 @@
-#!/usr/bin/env python
-
-# Copyright 2017 Google Inc. All Rights Reserved.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#      http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# NOTE!!!!!
+# NEED TO SOURCE INTO ENV CONFIG.
+# Example:
+#   source env_config
 
 """Google Cloud Speech API sample application using the REST API for batch
 processing.
-
 Example usage:
     python transcribe.py resources/audio.raw
     python transcribe.py gs://cloud-samples-tests/speech/brooklyn.flac
@@ -27,29 +15,14 @@ import argparse
 import io
 # [END import_libraries]
 
-import json
-
-from google.oauth2 import service_account
-creds = service_account.Credentials.from_service_account_file("key.json")
-scopes = creds.with_scopes(
-    ["https://www.googleapis.com/auth/cloud-platform"])
-# with open("key.json") as cred_file:
-#     creds = cred_file.read()
-#     creds = json.loads(creds)
-
-from pprint import pprint
-pprint(creds)
 
 # [START def_transcribe_file]
-
-
 def transcribe_file(speech_file):
     """Transcribe the given audio file."""
     from google.cloud import speech
     from google.cloud.speech import enums
     from google.cloud.speech import types
-
-    client = speech.SpeechClient(credentials=creds, scopes=scopes)
+    client = speech.SpeechClient()
 
     # [START migration_sync_request]
     # [START migration_audio_config_file]
@@ -81,7 +54,7 @@ def transcribe_file(speech_file):
 #     from google.cloud import speech
 #     from google.cloud.speech import enums
 #     from google.cloud.speech import types
-#     client = speech.SpeechClient(credentials=creds)
+#     client = speech.SpeechClient()
 
 #     # [START migration_audio_config_gcs]
 #     audio = types.RecognitionAudio(uri=gcs_uri)
@@ -107,7 +80,7 @@ if __name__ == '__main__':
     parser.add_argument(
         'path', help='File or GCS path for audio file to be recognized')
     args = parser.parse_args()
-    # if args.path.startswith('gs://'):
-    #     transcribe_gcs(args.path)
-    # else:
-    transcribe_file(args.path)
+    if args.path.startswith('gs://'):
+        transcribe_gcs(args.path)
+    else:
+        transcribe_file(args.path)
