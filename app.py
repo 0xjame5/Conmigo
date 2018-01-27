@@ -12,13 +12,15 @@ from flask import Flask, render_template, request, session, Response, \
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'asdf'
 app.debug = True
-heartbeat_interval = 10 # seconds
+heartbeat_interval = 10  # seconds
+
 
 class ExtensibleJSONEncoder(json.JSONEncoder):
     def default(self, obj):
         if hasattr(obj, 'to_JSON'):
             return obj.to_JSON()
         return super(ExtensibleJSONEncoder, self).default(obj)
+
 
 def jsonify(*args, **kwargs):
     indent = None
@@ -37,6 +39,7 @@ def jsonify(*args, **kwargs):
 
 # Override Flask's json encoder to check for to_JSON method on objects
 app.json_encoder = ExtensibleJSONEncoder
+
 
 class WebRTCUser(object):
     id = None
@@ -77,6 +80,7 @@ class WebRTCUser(object):
             username=self.username
         )
 
+
 class WebRTCRoom(object):
     name = ''
     encryption = ''
@@ -98,16 +102,16 @@ class WebRTCRoom(object):
         user.rooms.append(self)
         print user.id
         self.emit('user_join', _exclude=user.id,
-            username=user.username,
-            room=self.name)
+                  username=user.username,
+                  room=self.name)
 
     def user_leave(self, user, disconnect=True):
         try:
             self.users.remove(user)
             user.rooms.remove(self)
             self.emit('user_leave', _exclude=user.id,
-                disconnect=disconnect,
-                username=user.username)
+                      disconnect=disconnect,
+                      username=user.username)
         except:
             pass
 
@@ -121,7 +125,6 @@ class WebRTCRoom(object):
             if exclude and user.id == exclude:
                 continue
             user.emit(_payload=payload)
-
 
 
 class WebRTC(object):
@@ -155,7 +158,9 @@ class WebRTC(object):
         del rtc.users[stream_id]
         del rtc.users_by_stream[stream_id]
 
+
 rtc = WebRTC()
+
 
 def event_stream(stream_id):
     """SSE stream handler for clients"""
@@ -190,6 +195,8 @@ def heartbeat(delay):
         for user in rtc.users:
             rtc.users[user].emit('heartbeat')
         time.sleep(delay)
+
+
 thread.start_new_thread(heartbeat, (heartbeat_interval,))
 
 
@@ -204,9 +211,11 @@ def before_request():
     setattr(request, 'stream_id', stream_id)
     setattr(request, 'webrtc_user', user)
 
+
 @app.route('/')
 def index():
     return render_template('index.html')
+
 
 @app.route('/stream')
 def stream():
@@ -215,11 +224,13 @@ def stream():
     rtc.users[stream_id] = WebRTCUser(stream_id)
     rtc.users_by_stream[stream_id] = rtc.users[stream_id]
     return Response(stream_with_context(event_stream(stream_id)),
-        mimetype="text/event-stream")
+                    mimetype="text/event-stream")
+
 
 @app.route('/debug')
 def debug():
     return render_template('debug.html', rtc=rtc)
+
 
 @app.route('/set_username', methods=['POST'])
 def on_set_name():
@@ -243,7 +254,7 @@ def on_set_name():
 
     if not user:
         return jsonify(error="Missing or invalid X-Stream-ID header",
-            _status=400)
+                       _status=400)
 
     old_username = user.username
     if old_username:
@@ -252,11 +263,12 @@ def on_set_name():
     user.username = request.form['username']
     for room in user.rooms:
         room.emit('username_change',
-            old_username=old_username,
-            username=user.username,
-            exclude=user.id)
+                  old_username=old_username,
+                  username=user.username,
+                  exclude=user.id)
 
     return jsonify(success=True)
+
 
 @app.route('/join_room', methods=['POST'])
 def on_join_room():
@@ -281,12 +293,14 @@ def on_join_room():
 
     return jsonify(data)
 
+
 @app.route('/leave_room', methods=['POST'])
 def on_leave_room():
     print 'leave_room', request.form
     username = request.form['username']
     room = request.form['room']
     leave_room(room)
+
 
 @app.route('/room_info', methods=['POST'])
 def on_room_info():
@@ -299,11 +313,12 @@ def on_room_info():
         browser = rtc.browser[room]
         browser_version = rtc.browser_version[room]
     user.emit('receive_room_info',
-        encryption=encryption,
-        browser=browser,
-        browser_version=browser_version
-    )
+              encryption=encryption,
+              browser=browser,
+              browser_version=browser_version
+              )
     return jsonify(success=True)
+
 
 @app.route('/send_ice_candidate', methods=['POST'])
 def on_send_ice_candidate():
@@ -311,10 +326,11 @@ def on_send_ice_candidate():
     sender = rtc.get_current_user()
     user = rtc.users_by_username[request.form['username']]
     user.emit('receive_ice_candidate',
-        candidate=request.form['candidate'],
-        username=sender.username
-    )
+              candidate=request.form['candidate'],
+              username=sender.username
+              )
     return jsonify(success=True)
+
 
 @app.route('/send_offer', methods=['POST'])
 def on_send_offer():
@@ -322,10 +338,11 @@ def on_send_offer():
     sender = rtc.get_current_user()
     user = rtc.users_by_username[request.form['username']]
     user.emit('receive_offer',
-        sdp=request.form['sdp'],
-        username=sender.username
-    )
+              sdp=request.form['sdp'],
+              username=sender.username
+              )
     return jsonify(success=True)
+
 
 @app.route('/send_answer', methods=['POST'])
 def on_send_answer():
@@ -333,10 +350,11 @@ def on_send_answer():
     sender = rtc.get_current_user()
     user = rtc.users_by_username[request.form['username']]
     user.emit('receive_answer',
-        sdp=request.form['sdp'],
-        username=sender.username
-    )
+              sdp=request.form['sdp'],
+              username=sender.username
+              )
     return jsonify(success=True)
+
 
 @app.route('/get_rooms', methods=['GET', 'POST'])
 def get_rooms():
@@ -344,6 +362,7 @@ def get_rooms():
     for room in rtc.rooms:
         getRooms.insert(0, room)
     return jsonify(getRooms)
+
 
 @app.route('/get_users_in_room/<room>', methods=['GET'])
 def get_users_in_room(room):
@@ -353,9 +372,10 @@ def get_users_in_room(room):
         get_users_in_room.insert(0, user.username)
     return jsonify(get_users_in_room)
 
+
 @app.route('/leave_other_rooms/<newroom>/<username>', methods=['GET'])
 def leave_rooms(newroom, username):
-    user = rtc.users_by_username[username];
+    user = rtc.users_by_username[username]
     # user.emit_to_rooms('user_leave');
     for room in rtc.rooms:
         if(room != newroom):
@@ -363,6 +383,12 @@ def leave_rooms(newroom, username):
             room.user_leave(user)
     return jsonify(success=True)
 
+
+@app.route('/speech', methods=['GET', "POST"])
+def speech():
+    return "hello"
+
+
 if __name__ == '__main__':
-    context = ('cert.pem','key.pem')
+    context = ('cert.pem', 'key.pem')
     app.run('0.0.0.0', ssl_context=context, debug=True, threaded=True)
