@@ -74,13 +74,14 @@
         </div>
     </nav>
     <div class="container" data-ng-controller="LogController">
-        <div class="col-md-6" id="messages">
-          <div data-ng-if="chat.messages[chat.currentRoom]" class="messages" data-ng-repeat="msg in chat.messages[chat.currentRoom]">
+
+        <div class="col-md-6">
+          <!-- <div data-ng-if="chat.messages[chat.currentRoom]" class="messages" data-ng-repeat="msg in chat.messages[chat.currentRoom]">
               <span style="font-size: 0.8em!important" class="text-muted"><i class="fa fa-clock-o"></i>&nbsp;<% msg.time %></span>&nbsp;
               <span data-ng-if="!msg.type" style="color: #90CA0A!important" class="chat-user"><b><% msg.username %></b></span>
               <span data-ng-if="!msg.type" class="message-inner"><% msg.content %></span>
               <span data-ng-if="msg.type" class="message-inner info"><% msg.content %></span>
-          </div>
+          </div> -->
         </div>
 
         <div class="video-wrapper">
@@ -105,11 +106,47 @@
     </div>
 
 
-    <div class="col-lg-12" style="position:absolute; bottom:20px">
-      <div id="buffer">
-          <textarea class="form-control" id="buffer_input"></textarea>
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+      Launch demo modal
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+          </div>
+          <div class="modal-body">
+
+            <div class="col-md-12" id="messages">
+          <div data-ng-if="chat.messages[chat.currentRoom]" class="messages" data-ng-repeat="msg in chat.messages[chat.currentRoom]">
+              <span style="font-size: 0.8em!important" class="text-muted"><i class="fa fa-clock-o"></i>&nbsp;<% msg.time %></span>&nbsp;
+              <span data-ng-if="!msg.type" style="color: #90CA0A!important" class="chat-user"><b><% msg.username %></b></span>
+              <span data-ng-if="!msg.type" class="message-inner"><% msg.content %></span>
+              <span data-ng-if="msg.type" class="message-inner info"><% msg.content %></span>
+          </div>
+        </div>
+
+            <!-- CHAT INPUT TEXT AREA -->
+            <div class="col-lg-12" style="position:absolute; bottom:20px">
+              <div id="buffer">
+                  <textarea class="form-control" id="buffer_input"></textarea>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+          </div>
+        </div>
       </div>
     </div>
+
 
     <div class="modal fade" id="myModal" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog" role="document">
