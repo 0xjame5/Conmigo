@@ -8,4 +8,5 @@
 *.env/
 *.idea/
 env
+venv
 .env
