@@ -75,7 +75,10 @@
     </nav>
     <div class="container" data-ng-controller="LogController">
 
-        <div class="col-md-6">FILLER TO GET SHIT WORKING :) 1</div>
+      <div class="col-md-6">
+        TEMPORARY EMPTY SPACE. WORKING  ON IT:) 1
+        SOME SCOREBOARD....
+      </div>
 
         <div class="video-wrapper">
           <div class="col-md-6">
@@ -83,7 +86,7 @@
             <video id="localVideo" style="float:right;max-width:50%;border: solid 3px #90CA0A;" autoplay muted></video>
           </div>
 
-          <div class="col-md-6">FILLER TO GET SHIT WORKING :) 2</div>
+          <div class="col-md-6"></div>
 
           <div class="col-md-6">
             <video-player data-ng-repeat="peer in chat.peers[chat.currentRoom]">
@@ -92,13 +95,147 @@
           </div>
         </div>
 
-        <!-- <div class="col-md-6 video-wrapper">
-          <video id="localVideo" style="float:right;max-width:50%;border: solid 3px #90CA0A;" autoplay muted></video>
-          <video-player data-ng-repeat="peer in chat.peers[chat.currentRoom]">
-              <video autoplay style="float:right;max-width:50%;" id="<% peer.username %>" data-ng-src="<% chat.getVideo(peer.stream) %>"></video>
-          </video-player>
-        </div> -->
+
+        <div class="col-md-12">
+          <!-- <button type="button" class="btn btn-info">Listen</button>
+          <button type="button" class="btn btn-info">Info</button>
+
+          <article class="clip">
+            <audio controls></audio>
+            <p>your clip name</p>
+            <button>Delete</button>
+          </article> -->
+
+
+            <section class="main-controls">
+              <!-- <canvas class="visualizer" height="60px"></canvas> -->
+              <div id="buttons">
+                <button class="record">Record</button>
+                <button class="stop">Stop</button>
+              </div>
+            </section>
+
+            <section class="sound-clips">
+            </section>
+
+          </div>
+        </div>
+
+        <script>
+          var record = document.querySelector('.record');
+          var stop = document.querySelector('.stop');
+          var soundClips = document.querySelector('.sound-clips');
+
+          if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+             console.log('getUserMedia supported.');
+
+             // constraints - only audio needed for this app
+             navigator.mediaDevices.getUserMedia ({ audio: true })
+                // Success callback
+                .then(function(stream) {
+                  var mediaRecorder = new MediaRecorder(stream);
+
+                record.onclick = function() {
+                  mediaRecorder.start();
+                  console.log(mediaRecorder.state);
+                  console.log("recorder started");
+                  record.style.background = "red";
+                  record.style.color = "black";
+                }
+
+                var chunks = [];
+
+                mediaRecorder.ondataavailable = function(e) {
+                  chunks.push(e.data);
+                }
+
+                stop.onclick = function() {
+                  mediaRecorder.stop();
+                  console.log(mediaRecorder.state);
+                  console.log("recorder stopped");
+                  record.style.background = "";
+                  record.style.color = "";
+                }
+
+
+                mediaRecorder.onstop = function(e) {
+                console.log("recorder stopped");
+
+                var clipName = prompt('Enter a name for your sound clip');
+
+                var clipContainer = document.createElement('article');
+                var clipLabel = document.createElement('p');
+                var audio = document.createElement('audio');
+                var deleteButton = document.createElement('button');
+
+                clipContainer.classList.add('clip');
+                audio.setAttribute('controls', '');
+                deleteButton.innerHTML = "Delete";
+                clipLabel.innerHTML = clipName;
+
+                clipContainer.appendChild(audio);
+                clipContainer.appendChild(clipLabel);
+                clipContainer.appendChild(deleteButton);
+                soundClips.appendChild(clipContainer);
+
+                var blob = new Blob(chunks, { 'type' : 'audio/ogg; codecs=opus' });
+                chunks = [];
+                var audioURL = window.URL.createObjectURL(blob);
+
+                console.log(audioURL);
+                console.log(blob);
+                typeof(blob);
+
+                var soundBlob = blob;
+
+                var fd = new FormData();
+
+                fd.append('fname', 'test.wav');
+                fd.append('data', soundBlob);
+                $.ajax({
+                    type: 'GET',
+                    url: '/speech',
+                    data: fd,
+                    processData: false,
+                    contentType: false
+                }).done(function(data) {
+                  console.log(data);
+                });
+
+                audio.src = audioURL;
+
+                deleteButton.onclick = function(e) {
+                  var evtTgt = e.target;
+                  evtTgt.parentNode.parentNode.removeChild(evtTgt.parentNode);
+                }
+              }
+                })
+                // Error callback
+                .catch(function(err) {
+                   console.log('The following gUM error occured: ' + err);
+                }
+             );
+          } else {
+             console.log('getUserMedia not supported on your browser!');
+          }
+        </script>
+
+
     </div>
+
+    <script>
+      var p = navigator.mediaDevices.getUserMedia({ audio: true, video: true });
+      p.then(function(mediaStream) {
+        var video = document.querySelector('video');
+        video.src = window.URL.createObjectURL(mediaStream);
+        video.onloadedmetadata = function(e) {
+      // Do something with the video here.
+          video.play();
+
+        };
+      });
+      p.catch(function(err) { console.log(err.name); });
+    </script>
 
 
     <!-- Button trigger modal -->
