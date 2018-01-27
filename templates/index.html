@@ -75,20 +75,15 @@
     </nav>
     <div class="container" data-ng-controller="LogController">
 
-        <div class="col-md-6">
-          <!-- <div data-ng-if="chat.messages[chat.currentRoom]" class="messages" data-ng-repeat="msg in chat.messages[chat.currentRoom]">
-              <span style="font-size: 0.8em!important" class="text-muted"><i class="fa fa-clock-o"></i>&nbsp;<% msg.time %></span>&nbsp;
-              <span data-ng-if="!msg.type" style="color: #90CA0A!important" class="chat-user"><b><% msg.username %></b></span>
-              <span data-ng-if="!msg.type" class="message-inner"><% msg.content %></span>
-              <span data-ng-if="msg.type" class="message-inner info"><% msg.content %></span>
-          </div> -->
-        </div>
+        <div class="col-md-6">FILLER TO GET SHIT WORKING :) 1</div>
 
         <div class="video-wrapper">
           <div class="col-md-6">
             <!-- <h2 style="float: right">This is your camera!</h2> -->
             <video id="localVideo" style="float:right;max-width:50%;border: solid 3px #90CA0A;" autoplay muted></video>
           </div>
+
+          <div class="col-md-6">FILLER TO GET SHIT WORKING :) 2</div>
 
           <div class="col-md-6">
             <video-player data-ng-repeat="peer in chat.peers[chat.currentRoom]">
@@ -107,31 +102,31 @@
 
 
     <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-      Launch demo modal
-    </button>
+    <!-- <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#messages-modal">
+      Messages :)
+    </button> -->
 
     <!-- Modal -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal fade" id="messages-modal" tabindex="-1" role="dialog" aria-labelledby="qweqwe">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+            <h4 class="modal-title" id="myModalLabel"></h4>
           </div>
           <div class="modal-body">
 
-            <div class="col-md-12" id="messages">
-          <div data-ng-if="chat.messages[chat.currentRoom]" class="messages" data-ng-repeat="msg in chat.messages[chat.currentRoom]">
-              <span style="font-size: 0.8em!important" class="text-muted"><i class="fa fa-clock-o"></i>&nbsp;<% msg.time %></span>&nbsp;
-              <span data-ng-if="!msg.type" style="color: #90CA0A!important" class="chat-user"><b><% msg.username %></b></span>
-              <span data-ng-if="!msg.type" class="message-inner"><% msg.content %></span>
-              <span data-ng-if="msg.type" class="message-inner info"><% msg.content %></span>
-          </div>
-        </div>
+            <div id="messages">
+              <div data-ng-if="chat.messages[chat.currentRoom]" class="messages" data-ng-repeat="msg in chat.messages[chat.currentRoom]">
+                <span style="font-size: 0.8em!important" class="text-muted"><i class="fa fa-clock-o"></i>&nbsp;<% msg.time %></span>&nbsp;
+                <span data-ng-if="!msg.type" style="color: #90CA0A!important" class="chat-user"><b><% msg.username %></b></span>
+                <span data-ng-if="!msg.type" class="message-inner"><% msg.content %></span>
+                <span data-ng-if="msg.type" class="message-inner info"><% msg.content %></span>
+              </div>
+            </div>
 
             <!-- CHAT INPUT TEXT AREA -->
-            <div class="col-lg-12" style="position:absolute; bottom:20px">
+            <div style="">
               <div id="buffer">
                   <textarea class="form-control" id="buffer_input"></textarea>
               </div>
@@ -170,6 +165,8 @@
         </div>
       </div>
     </div>
+
+
     <script type="text/javascript" src="static/vendor/jquery.min.js"></script>
     <script type="text/javascript" src="static/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="static/vendor/toastr.min.js"></script>
