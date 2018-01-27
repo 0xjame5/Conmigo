@@ -1,0 +1,50 @@
+I see a red plane.
+I see a blue plane.
+I see a green plane.
+I see a yellow plane.
+I see a red car.
+I see a blue car.
+I see a green car.
+I see a yellow car.
+I see a red house.
+I see a blue house.
+I see a green house.
+I see a yellow house.
+I see a red cat.
+I see a blue cat.
+I see a green cat.
+I see a yellow cat.
+I see a red dog.
+I see a blue dog.
+I see a green dog.
+I see a yellow dog.
+The box is red.
+The box is blue.
+The box is green.
+The box is black.
+The box is white.
+The book is red.
+The book is blue.
+The book is green.
+The book is black.
+The book is white.
+I have a red plane.
+I have a blue plane.
+I have a green plane.
+I have a yellow plane.
+I have a red car.
+I have a blue car.
+I have a green car.
+I have a yellow car.
+I have a red house.
+I have a blue house.
+I have a green house.
+I have a yellow house.
+I have a red cat.
+I have a blue cat.
+I have a green cat.
+I have a yellow cat.
+I have a red dog.
+I have a blue dog.
+I have a green dog.
+I have a yellow dog.
