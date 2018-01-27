@@ -2,19 +2,15 @@
 # NEED TO SOURCE INTO ENV CONFIG.
 # Example:
 #   source env_config
+# also, gcs is basically re-routing to google cloud servers.
+# DONT WORRY ABOUT IT UNLESS WE"RE STORING SOUNDS INTO GCS
 
-"""Google Cloud Speech API sample application using the REST API for batch
-processing.
-Example usage:
-    python transcribe.py resources/audio.raw
-    python transcribe.py gs://cloud-samples-tests/speech/brooklyn.flac
 """
-
-# [START import_libraries]
+Google Cloud Speech API sample application using the REST API for batch
+processing.
+"""
 import argparse
 import io
-# [END import_libraries]
-
 
 # [START def_transcribe_file]
 def transcribe_file(speech_file):
@@ -48,39 +44,7 @@ def transcribe_file(speech_file):
 # [END def_transcribe_file]
 
 
-# # [START def_transcribe_gcs]
-# def transcribe_gcs(gcs_uri):
-#     """Transcribes the audio file specified by the gcs_uri."""
-#     from google.cloud import speech
-#     from google.cloud.speech import enums
-#     from google.cloud.speech import types
-#     client = speech.SpeechClient()
-
-#     # [START migration_audio_config_gcs]
-#     audio = types.RecognitionAudio(uri=gcs_uri)
-#     config = types.RecognitionConfig(
-#         encoding=enums.RecognitionConfig.AudioEncoding.FLAC,
-#         sample_rate_hertz=16000,
-#         language_code='en-US')
-#     # [END migration_audio_config_gcs]
-
-#     response = client.recognize(config, audio)
-#     # Each result is for a consecutive portion of the audio. Iterate through
-#     # them to get the transcripts for the entire audio file.
-#     for result in response.results:
-#         # The first alternative is the most likely one for this portion.
-#         print('Transcript: {}'.format(result.alternatives[0].transcript))
-# # [END def_transcribe_gcs]
-
-
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(
-        description=__doc__,
-        formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument(
-        'path', help='File or GCS path for audio file to be recognized')
-    args = parser.parse_args()
-    if args.path.startswith('gs://'):
-        transcribe_gcs(args.path)
-    else:
-        transcribe_file(args.path)
+
+    file_name = "audio.raw"
+    transcribe_file(file_name)
