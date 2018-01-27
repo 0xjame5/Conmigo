@@ -24,9 +24,8 @@
                     <span class="sr-only">Toggle navigation</span>
                     <span class="fa fa-plus fa-2x"></span>
                 </button>
-                <a class="navbar-brand" href="#">Cheesy P2P</a>
+                <a class="navbar-brand" href="#">Conmigo</a>
             </div>
-
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>
@@ -34,7 +33,7 @@
                         <a data-ng-if="chat.rtc.username != ''" id="username"><% chat.rtc.username %></a>
                     </li>
                     <li class="dropdown" data-ng-init="chat.getRooms()" data-ng-click="chat.getRooms()">
-                        <a href="" class="dropdown-toggle" data-toggle="dropdown">Rooms<b class="caret"></b></a>
+                        <a href="" class="dropdown-toggle" data-toggle="dropdown">Classrooms<b class="caret"></b></a>
                         <ul id="roomsMenu" class="dropdown-menu">
                             <li class="column-dropdown" data-ng-repeat="room in chat.rooms">
                               <a data-ng-if="room != 'Lobby'" class="chat.joinRoom" data-room="<% room %>" data-ng-click="chat.joinRoom(room)"><% room %></a>
@@ -43,7 +42,7 @@
                     </li>
 
                     <li class="dropdown" data-ng-init="chat.getUsers(room)" data-ng-click="chat.getUsers(currentRoom)">
-                        <a href="" class="dropdown-toggle" data-toggle="dropdown">Users in room<b class="caret"></b></a>
+                        <a href="" class="dropdown-toggle" data-toggle="dropdown">Users in Classrooms<b class="caret"></b></a>
                         <ul id="usersMenu" class="dropdown-menu">
                             <li class="column-dropdown" data-ng-repeat="user in chat.users[chat.currentRoom]">
                                 <a data-ng-if="user != chat.rtc.username"><% user %></a>
@@ -93,6 +92,7 @@
         </div>
     </div>
 
+
     <div class="col-lg-12" style="position:absolute; bottom:20px">
       <div id="buffer">
           <textarea class="form-control" id="buffer_input"></textarea>
@@ -103,7 +103,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title" id="myModalLabel">Welcome to Cheesy P2P</h4>
+            <h4 class="modal-title" id="myModalLabel">Welcome to Conmigo</h4>
           </div>
           <div class="modal-body">
             <div>
@@ -111,7 +111,7 @@
                 <input autofocus data-ng-model="chat.rtc.username" id="login" type="text" class="form-control" placeholder="Set your nickname" />
                 <br>
                 <span class="input-group-btn">
-                <button class="btn btn-primary btn-sm" id="btn-chat">Go</button>
+                <button class="btn btn-primary btn-sm" id="btn-chat">Start learning!</button>
                 </span>
               </form>
             </div>
