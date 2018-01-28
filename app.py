@@ -14,6 +14,8 @@ from flask import Flask, render_template, request, Response, \
     stream_with_context
 from werkzeug import secure_filename
 
+from procs import process_audio
+
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "asdf"
 app.debug = True
@@ -397,7 +399,13 @@ def speech():
         "file_name": result.filename
     }
 
-    result.save(path.join("procs", secure_filename("raw.wav")))
+    raw_file_name = path.join("procs", secure_filename("raw.wav"))
+    # output_name = path.join("procs", secure_filename("raw.wav"))
+
+    result.save(raw_file_name)
+
+    # process_audio.split_recording(raw_file_name, output_name)
+    process_audio.transcribe(raw_file_name)
 
     return jsonify(output)
 
