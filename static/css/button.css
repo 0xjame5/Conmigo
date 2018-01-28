@@ -6,7 +6,7 @@
   margin-right: 5px;
   height: 50px;
   min-width: 100px;
-  background: #348AA7;
+  background: #27bd0f;
   border: none;
   outline: none;
   color: white;
@@ -14,7 +14,7 @@
   font-weight: 400;
   font-size: 20px;
   border-radius: 3px;
-  box-shadow: 0 5px 0px #348aa7;
+  box-shadow: 0 5px 0px #10712e;
   border-bottom: 2px solid #30809b;
 }
 .button:hover {

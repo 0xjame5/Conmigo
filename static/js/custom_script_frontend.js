@@ -4,7 +4,7 @@ $.ajax({
 }).done(function(data) {
     console.log(data);
     $("#images_holder").html("<img src=" + data["url"] + " alt='placeholder' width='300px';>")
-    $("#keywords").html("<h1 style='color: #27bd0f'><b>" + data["keyword"] + "</b></h1>");
+    $("#keywords").html("<h1 style='color: #000'><b>" + data["keyword"] + "</b></h1>");
     $("#questions").html("<h2>" + data["translated"] + "</h2>");
     $("#translation").html("<h2><b>Translated: </b>" + data["sentence"] + "</h2>");
 });
@@ -66,15 +66,10 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
           processData: false,
           contentType: false
         }).done(function(data) {
-            console.log(data);
             var string1 = $("#questions").text().toUpperCase().trim().replace(/\./g, "");
-            console.log("string1");
-            console.log(string1);
             var string2 = JSON.stringify(data["translated"]).toUpperCase().trim().replace(/\"/g, "").replace(/\s+$/, "");
-            console.log("string2");
-            console.log(string2);
-            var areEqual = string1 === string2;
-            console.log(areEqual);
+            var is_equal = string1 === string2;
+            console.log(is_equal);
 
         });
     }
