@@ -16,7 +16,10 @@ def transcribe(output_path, to_lang="es"):
     args = "ffmpeg -i {0}.webm -acodec pcm_s16le -ar 48000 -y {0}.wav".format(
         output_path)
 
-    subprocess.Popen(args.split(" "))
+    p = subprocess.Popen(args.split(" "))
+
+    p.wait()
+
 
     print "Transcribing file..."
     recognizer = sr.Recognizer()
