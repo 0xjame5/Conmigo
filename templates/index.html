@@ -98,13 +98,19 @@
     <div class="container-fluid" data-ng-controller="LogController" style="padding: 5em;">
 
       <div class="col-md-6 border-between" style="border: 5px solid #27bd0f; border-radius: 3em; color: white; background-color: #27bd0f; font-size: 20px;">
-        <div class="col-md-6">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+        <div class="col-md-6">
+          <h1 class="center"><% chat.rtc.username %></h1>
+          <hr>
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
         tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
         quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
         consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
         cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
         proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
-        <div class="col-md-6">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+        <div class="col-md-6">
+          <h1 class="center"><% chat.users[0] %></h1>
+          <hr>
+Lorem ipsum dolor sit iamet, consectetur adipisicing elit, sed do eiusmod
         tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
         quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
         consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
@@ -142,17 +148,19 @@
           </div>
         </div>
         <div class="col-md-6">
-          <div class="page-lead" id="questions"></div>
-          <div class="page-lead" id="translation"></div>
-          <audio controls id="audioslave">
-          </audio>
-
-          </br>
-          <div id="buttons">
-            <input type="button" class="button record" value="Record"></input>
-            <input type="button" class="button stop" value="Stop"></input>
-          </section>
-        </div>
+          <div class="row">
+            <div class="page-lead" id="questions"></div>
+            <div class="page-lead" id="translation"></div>
+            <audio controls id="audioslave"  preload="none"></audio>
+          </div>
+          <!-- </br> -->
+          <div class="row" style="padding-top: 2em;">
+            <div id="buttons">
+              <input type="button" class="button record" value="Record"></input>
+              <input type="button" class="button stop" value="Stop"></input>
+            </div>
+          </div>
+        </section>
       </div>
       </div>
     </div>
