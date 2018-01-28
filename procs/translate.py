@@ -5,6 +5,7 @@
 from google.cloud import translate
 
 from string import punctuation
+from os import path
 import random
 
 from db import KEYWORDS
@@ -50,6 +51,8 @@ def get_random_sent(lang="es"):
         "sentence": chosen_sent,
         "keyword": keyword,
         "url": KEYWORDS[keyword],
+        "audio_path": path.join(
+            "static", "wav", translated_sent.replace(" ", "_").replace("ó", "o") + "wav"),
         "translated": translated_sent
     }
 
