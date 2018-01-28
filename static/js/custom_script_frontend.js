@@ -3,11 +3,10 @@ $.ajax({
     url: '/practice_questions'
 }).done(function(data) {
     console.log(data);
-    $("#images_holder").html("<img src=" + data["url"] + " alt='Mountain View' width='300px';>")
-    $("#keywords").html("<h1>" + data["keyword"] + "</h1>");
+    $("#images_holder").html("<img src=" + data["url"] + " alt='placeholder' width='300px';>")
     $("#keywords").html("<h1>" + data["keyword"] + "</h1>");
     $("#questions").html("<h2>" + data["translated"] + "</h2>");
-    $("#translation").html("<h3>" + data["sentence"] + "</h3>");
+    $("#translation").html("<h2>" + data["sentence"] + "</h2>");
 });
 
 
@@ -45,7 +44,6 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         record.style.color = "";
     }
 
-
     mediaRecorder.onstop = function(e) {
         console.log("recorder stopped");
 
@@ -69,14 +67,20 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
           contentType: false
         }).done(function(data) {
             console.log(data);
-            $("#translation").append("<h1>" + data["translated"] + "</h1>")
+            var string1 = $("#questions").text().toUpperCase().trim().replace(/\./g, "");
+            console.log("string1");
+            console.log(string1);
+            var string2 = JSON.stringify(data["translated"]).toUpperCase().trim().replace(/\"/g, "").replace(/\s+$/, "");
+            console.log("string2");
+            console.log(string2);
+            var areEqual = string1 === string2;
+            console.log(areEqual);
+
         });
     }
+
 }).catch(function(err) { // Error callback
    console.log('The following gUM error occured: ' + err);
 }); } else {
     console.log("FUCK OFF");
 }
-
-
-

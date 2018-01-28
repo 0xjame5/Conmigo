@@ -398,7 +398,8 @@ def speech():
 
     output = process_audio.transcribe(raw_file_name.replace(".webm", ""))
 
-    return jsonify(translated=output, success=True)
+    return jsonify(user_voice=output, success=True)
+
 
 @app.route("/practice_questions", methods=["GET"])
 def practice():
