@@ -1,21 +1,21 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from pydub import AudioSegment
+import subprocess
+
 import speech_recognition as sr
-
-
-def split_recording(raw_file_path, output_path, seg_lim=30000):
-
-    print "Splitting file..."
-    song = AudioSegment.from_wav(raw_file_path)
-
-    # get the first seg_lim milliseconds
-    song[:seg_lim].export("answer.wav", format="wav")
 
 
 with open("procs/google_creds.json") as f:
     GOOGLE_CLOUD_SPEECH_CREDENTIALS = f.read()
+
+
+def convert_to_wav(file_path):
+
+    args = "ffmpeg -i {0}.webm -acodec pcm_s16le -ar 48000 -y {0}.wav".format(
+        file_path)
+
+    subprocess.Popen(args.split(" "))
 
 
 def transcribe(output_path, to_lang="es"):
@@ -38,8 +38,8 @@ def transcribe(output_path, to_lang="es"):
 
 if __name__ == '__main__':
 
-    raw_file_path = "raw.wav"
-    output_path = "answer.wav"
+    convert_to_wav("raw")
+    output_path = "raw.wav"
 
-    split_recording(raw_file_path, output_path)
-    transcribe(output_path)
+    # split_recording(raw_file_path, output_path)
+    transcribe(output_path, to_lang="en")
