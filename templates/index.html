@@ -163,28 +163,15 @@
 
                 var clipName = 'Enter a name for your sound clip';
 
-                var clipContainer = document.createElement('article');
-                var clipLabel = document.createElement('p');
-                var audio = document.createElement('audio');
-                var deleteButton = document.createElement('button');
-
-                clipContainer.classList.add('clip');
-                audio.setAttribute('controls', '');
-                deleteButton.innerHTML = "Delete";
-                clipLabel.innerHTML = clipName;
-
-                clipContainer.appendChild(audio);
-                clipContainer.appendChild(clipLabel);
-                clipContainer.appendChild(deleteButton);
-                soundClips.appendChild(clipContainer);
-
                 var blob = new Blob(chunks, { 'type' : 'audio/ogg; codecs=opus' });
                 chunks = [];
+
                 var audioURL = window.URL.createObjectURL(blob);
 
                 var form = new FormData();
                 form.append('file', blob, clipName);
                 form.append('title', "hi");
+
                 $.ajax({
                   type: 'POST',
                   url: '/speech',
@@ -196,13 +183,14 @@
                   console.log(data);
                 });
 
+                $.ajax({
+                  type: 'GET',
+                  url: '/practice_questions'
+                }).done( function (data) {
+                  console.log(data)
+                });
 
-                audio.src = audioURL;
 
-                deleteButton.onclick = function(e) {
-                  var evtTgt = e.target;
-                  evtTgt.parentNode.parentNode.removeChild(evtTgt.parentNode);
-                }
               }
                 })
                 // Error callback
