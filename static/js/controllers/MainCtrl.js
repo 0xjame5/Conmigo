@@ -69,8 +69,8 @@
                 return (peer.username == user);
             });
             if(count.length > 0) {
-                toastr.info('%0.'.f(user.bold()) + ' has leave room');
-                vm.messages[vm.currentRoom].push({username: '' , content: user + ' has leave room' , type: 'info'});
+                toastr.info('%0.'.f(user.bold()) + ' has left the room');
+                vm.messages[vm.currentRoom].push({username: '' , content: user + ' has left the room' , type: 'info'});
             }
             vm.peers[vm.currentRoom] = vm.peers[vm.currentRoom].filter(function(peer) {
                 return (peer.username !== user);
@@ -428,7 +428,7 @@
                     .fail(function(error) {
                         vm.rtc.username = '';
                         if(error.responseText == '{"error": "Username already in use"}')
-                            toastr.error('Nom d\'utilisateur déjà pris');
+                            toastr.error('Username already in use');
                         vm.rtc.fire('set_username_error', username, error);
                     });
             }

@@ -10,6 +10,8 @@ $.ajax({
     $("#audioslave").html("<source src=" + data["audio_path"] + " type='audio/wav'>");
 });
 
+var user1 = [];
+var user2 = [];
 
 var record = document.querySelector('.record');
 var stop = document.querySelector('.stop');
@@ -78,7 +80,25 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
 
             var is_equal = (string1 === string2);
             console.log(is_equal);
-            alert(is_equal);
+
+            var kw = $("#keywords").text();
+
+            if (is_equal == true) {
+
+              user1.push(kw);
+
+              if (user1.length === 1) {
+                $("#user1 li").text(kw);
+              } else {
+                $("#user1").append("<li class='tick'>" + kw + "</li>");
+              }
+
+            } else {
+              user2.push(kw);
+            }
+
+            console.log(user1);
+            console.log(user2);
 
         });
     }
@@ -86,5 +106,5 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
 }).catch(function(err) { // Error callback
    console.log('The following gUM error occured: ' + err);
 }); } else {
-    console.log("FUCK OFF");
+    console.log("lol");
 }

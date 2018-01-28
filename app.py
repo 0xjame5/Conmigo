@@ -7,7 +7,6 @@ from datetime import datetime
 import json
 import thread
 import time
-from os import path
 import uuid
 
 from flask import Flask, render_template, request, Response, \
