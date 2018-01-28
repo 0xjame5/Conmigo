@@ -12,6 +12,9 @@
     <link rel="stylesheet" type="text/css" href="static/vendor/css/style.css" />
     <link rel="stylesheet" type="text/css" href="static/vendor/fontawesome/css/font-awesome.css"/>
     <link rel="stylesheet" type="text/css" href="static/vendor/css/toastr.min.css"/>
+
+    <link rel="stylesheet" type="text/css" href="static/css/button.css"/>
+
 </head>
 
 <body data-ng-controller="MainController as chat">
@@ -76,26 +79,23 @@
     <div class="container" data-ng-controller="LogController">
 
       <div class="col-md-6">
-        <section class="main-controls">
+        fbsdjbfjdsbfjsdbf
+<!--         <section class="main-controls">
           <div id="images_holder"></div>
 
           <div class="page-lead" id="keywords"></div>
           <div class="page-lead" id="questions"></div>
           <div class="page-lead" id="translation"></div>
 
-          <div class="page-lead">Your responses</div>
-          <div class="page-lead" id="user_voice"><h1></h1></div>
-
           <div id="buttons">
-            <button class="record">Record</button>
-            <button class="stop">Stop</button>
+            <input type="button" class="button record" value="Record"></input>
+            <input type="button" class="button stop" value="Stop"></input>
           </div>
-        </section>
+        </section> -->
       </div>
 
         <div class="video-wrapper">
           <div class="col-md-6">
-            <!-- <h2 style="float: right">This is your camera!</h2> -->
             <video id="localVideo" style="float:right;max-width:50%;border: solid 3px #90CA0A;" autoplay muted></video>
           </div>
 
@@ -108,12 +108,36 @@
           </div>
         </div>
 
+      </div>
+    </div>
 
 <!--         <div class="col-md-12">
 
           </div>
         </div>
  -->
+
+    <div class="container" style="border: 5px solid #27bd0f; border-spacing-top: 3em; border-radius: 3em;" data-ng-controller="LogController">
+
+      <section class="main-controls">
+        <div class="col-md-6">
+          <div id="images_holder"></div>
+          <div class="page-lead" id="keywords"></div>
+        </div>
+        <div class="col-md-6">
+          <div class="page-lead" id="questions"></div>
+          <div class="page-lead" id="translation"></div>
+
+          <div id="buttons">
+            <input type="button" class="button record" value="Record"></input>
+            <input type="button" class="button stop" value="Stop"></input>
+          </section>
+        </div>
+      </div>
+      </div>
+    </div>
+
+
     <script>
       var p = navigator.mediaDevices.getUserMedia({ audio: true, video: true });
       p.then(function(mediaStream) {
