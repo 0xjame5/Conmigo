@@ -18,7 +18,7 @@ translate_client = translate.Client.from_service_account_json(
 def translate_corpus(lang="es", new_corpus="sent_spanish_50.txt"):
 
     data = []
-    with open("sent_english_50.txt") as sent_file:
+    with open("procs/sent_english_50.txt") as sent_file:
         for line in sent_file:
             data.append(
                 translate_client.translate(
@@ -31,9 +31,9 @@ def translate_corpus(lang="es", new_corpus="sent_spanish_50.txt"):
         new_corpus_file.write("\n".join(data).encode("utf-8"))
 
 
-def get_random_sent():
+def get_random_sent(lang="es"):
 
-    with open("sent_english_50.txt") as sent_file:
+    with open("procs/sent_english_50.txt") as sent_file:
         sents = sent_file.read().split("\n")
         chosen_sent = random.choice(sents)
         normalized_sent = chosen_sent.translate(None, punctuation).split()
@@ -43,10 +43,15 @@ def get_random_sent():
             "sentence": chosen_sent,
             "keyword": keyword,
             "url": KEYWORDS[keyword],
+            "translated": translate_client.translate(
+                chosen_sent.replace("\n", ""),
+                target_language=lang
+            )["translatedText"]
+
         }
 
 
 if __name__ == '__main__':
 
     print get_random_sent()
-    translate_corpus()
+    # translate_corpus()
