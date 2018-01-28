@@ -14,7 +14,7 @@ from flask import Flask, render_template, request, Response, \
     stream_with_context
 from werkzeug import secure_filename
 
-from procs import process_audio
+from procs import process_audio, translate
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "asdf"
@@ -399,6 +399,10 @@ def speech():
     output = process_audio.transcribe(raw_file_name.replace(".webm", ""))
 
     return jsonify(translated=output, success=True)
+
+@app.route("/practice_questions", methods=["GET"])
+def practice():
+    return jsonify(translate.get_random_sent())
 
 
 if __name__ == "__main__":

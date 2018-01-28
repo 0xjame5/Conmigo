@@ -14,7 +14,6 @@ translate_client = translate.Client.from_service_account_json(
     "google_creds.json"
 )
 
-
 def translate_corpus(lang="es", new_corpus="sent_spanish_50.txt"):
 
     data = []
@@ -47,7 +46,6 @@ def get_random_sent(lang="es"):
                 chosen_sent.replace("\n", ""),
                 target_language=lang
             )["translatedText"]
-
         }
 
 
