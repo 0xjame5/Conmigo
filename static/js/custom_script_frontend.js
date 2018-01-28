@@ -70,7 +70,7 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             var string1 = $("#questions").text().toUpperCase().trim().replace(/\./g, "");
             var string2 = JSON.stringify(data["translated"]).toUpperCase().trim().replace(/\"/g, "").replace(/\s+$/, "");
             var is_equal = string1 === string2;
-            console.log(is_equal);
+            alert(is_equal);
 
         });
     }

@@ -19,12 +19,18 @@
         background-color: #f0f0f0;
       }
 
-      .cliente {
-        margin-top:10px;
-        border: #cdcdcd medium solid;
-        border-radius: 10px;
-        -moz-border-radius: 10px;
-        -webkit-border-radius: 10px;
+      .border-between > [class*='col-']:before {
+         background: #e3e3e3;
+         bottom: 0;
+         content: " ";
+         left: 0;
+         position: absolute;
+         width: 1px;
+         top: 0;
+      }
+
+      .border-between > [class*='col-']:first-child:before {
+         display: none;
       }
     </style>
 
@@ -89,47 +95,43 @@
             </div>
         </div>
     </nav>
-    <div class="container" data-ng-controller="LogController" style="padding-top: 5em;">
+    <div class="container-fluid" data-ng-controller="LogController" style="padding: 5em;">
 
-      <div class="col-md-6">
-        fbsdjbfjdsbfjsdbf
-<!--         <section class="main-controls">
-          <div id="images_holder"></div>
-
-          <div class="page-lead" id="keywords"></div>
-          <div class="page-lead" id="questions"></div>
-          <div class="page-lead" id="translation"></div>
-
-          <div id="buttons">
-            <input type="button" class="button record" value="Record"></input>
-            <input type="button" class="button stop" value="Stop"></input>
-          </div>
-        </section> -->
+      <div class="col-md-6 border-between" style="border: 5px solid #27bd0f; border-radius: 3em; color: white; background-color: #27bd0f; font-size: 20px;">
+        <div class="col-md-6">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+        <div class="col-md-6">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
       </div>
 
-        <div class="video-wrapper">
-          <div class="col-md-6">
-            <video id="localVideo" style="float:right;max-width:50%;border: solid 3px #90CA0A;" autoplay muted></video>
-          </div>
+      <div class="video-wrapper">
 
-          <div class="col-md-6"></div>
-
-          <div class="col-md-6">
-            <video-player data-ng-repeat="peer in chat.peers[chat.currentRoom]">
-              <video autoplay style="float:right;max-width:50%;" id="<% peer.username %>" data-ng-src="<% chat.getVideo(peer.stream) %>"></video>
-          </video-player>
-          </div>
+        <div class="col-md-6">
+          <video id="localVideo" style="float:right;max-width:50%;border: solid 3px #90CA0A;" autoplay muted></video>
         </div>
+
+        <div class="col-md-6"></div>
+
+        <div class="col-md-6">
+          <video-player data-ng-repeat="peer in chat.peers[chat.currentRoom]">
+            <video autoplay style="float:right;max-width:50%;" id="<% peer.username %>" data-ng-src="<% chat.getVideo(peer.stream) %>"></video>
+          </video-player>
+        </div>
+
+      </div>
 
       </div>
     </div>
 
-<!--         <div class="col-md-12">
-
-          </div>
-        </div>
- -->
-    <div class="container" data-ng-controller="LogController" style="padding-top: 10em;">
+    <div class="container" data-ng-controller="LogController">
 
       <section class="main-controls">
         <div class="col-md-6">
