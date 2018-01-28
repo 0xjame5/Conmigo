@@ -4,9 +4,9 @@ $.ajax({
 }).done(function(data) {
     console.log(data);
     $("#images_holder").html("<img src=" + data["url"] + " alt='placeholder' width='300px';>")
-    $("#keywords").html("<h1>" + data["keyword"] + "</h1>");
+    $("#keywords").html("<h1 style='color: #27bd0f'><b>" + data["keyword"] + "</b></h1>");
     $("#questions").html("<h2>" + data["translated"] + "</h2>");
-    $("#translation").html("<h2>" + data["sentence"] + "</h2>");
+    $("#translation").html("<h2><b>Translated: </b>" + data["sentence"] + "</h2>");
 });
 
 
