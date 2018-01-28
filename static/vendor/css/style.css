@@ -16,16 +16,19 @@ a {
    outline: none!important;
 }
 .navbar-default {
+  color: #fff;
     background-color: #FFF;
 }
 
 .navbar-brand {
-  color:#90CA0A!important;
   font-family:"Raleway";
-  font-size:21px;
+  font-size:35px;
   font-weight:bold;
 }
 
+.navbar-default .navbar-nav>li>a {
+    color: #fff;
+}
 .navbar-default .navbar-nav > li > a:focus, .navbar-default .navbar-nav > li > a:hover {
     color:#90CA0A!important;
     background-color: transparent;
@@ -179,7 +182,7 @@ a {
   height:30px;
   width: 80%;
   float: left;
-  color:#777;
+  color:#fff;
   margin-top:3px;
 }
 

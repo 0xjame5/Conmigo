@@ -14,12 +14,25 @@
     <link rel="stylesheet" type="text/css" href="static/vendor/css/toastr.min.css"/>
 
     <link rel="stylesheet" type="text/css" href="static/css/button.css"/>
+    <style type="text/css" media="screen">
+      body {
+        background-color: #f0f0f0;
+      }
+
+      .cliente {
+        margin-top:10px;
+        border: #cdcdcd medium solid;
+        border-radius: 10px;
+        -moz-border-radius: 10px;
+        -webkit-border-radius: 10px;
+      }
+    </style>
 
 </head>
 
 <body data-ng-controller="MainController as chat">
 
-    <nav class="navbar navbar-default navbar-fixed-top">
+    <nav class="navbar navbar-default navbar-fixed-top" style="background-color:  #27bd0f; color: #fff">
         <div class="container">
 
             <div class="navbar-header">
@@ -27,7 +40,7 @@
                     <span class="sr-only">Toggle navigation</span>
                     <span class="fa fa-plus fa-2x"></span>
                 </button>
-                <a class="navbar-brand" href="#">Conmigo</a>
+                <a class="navbar-brand" href="#" style="color: white">Conmigo</a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -76,7 +89,7 @@
             </div>
         </div>
     </nav>
-    <div class="container" data-ng-controller="LogController">
+    <div class="container" data-ng-controller="LogController" style="padding-top: 5em;">
 
       <div class="col-md-6">
         fbsdjbfjdsbfjsdbf
@@ -116,18 +129,21 @@
           </div>
         </div>
  -->
-
-    <div class="container" style="border: 5px solid #27bd0f; border-spacing-top: 3em; border-radius: 3em;" data-ng-controller="LogController">
+    <div class="container" data-ng-controller="LogController" style="padding-top: 10em;">
 
       <section class="main-controls">
         <div class="col-md-6">
-          <div id="images_holder"></div>
-          <div class="page-lead" id="keywords"></div>
+          <div class="col-md-offset-3" style="border: 5px solid #27bd0f; border-radius: 3em; background-color: #fff">
+            </br>
+            <div style="padding-left: 50px;" id="images_holder"></div>
+            <div style="padding-left: 50px;" class="page-lead" id="keywords"></div>
+          </div>
         </div>
         <div class="col-md-6">
           <div class="page-lead" id="questions"></div>
           <div class="page-lead" id="translation"></div>
 
+          </br>
           <div id="buttons">
             <input type="button" class="button record" value="Record"></input>
             <input type="button" class="button stop" value="Stop"></input>
