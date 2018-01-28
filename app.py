@@ -406,6 +406,22 @@ def practice():
     return jsonify(translate.get_random_sent())
 
 
+@app.route("/is_equal", methods=["POST"])
+def is_equal():
+    print(request.form)
+    string1 = request.form["string1"].lower().replace(".", "")
+    string2 = request.form["string2"].lower().replace(".", "")
+    if string2[-1] == " ":
+        string2 = string2[:-1]
+
+    print(string1)
+    print(string2)
+
+    is_equal = (string1 == string2)
+    print(is_equal)
+    return jsonify(success=True, is_equal=is_equal)
+
+
 if __name__ == "__main__":
     context = ("cert.pem", "key.pem")
     app.run("0.0.0.0", ssl_context=context, debug=True, threaded=True)

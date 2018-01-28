@@ -67,9 +67,17 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
           processData: false,
           contentType: false
         }).done(function(data) {
+
             var string1 = $("#questions").text().toUpperCase().trim().replace(/\./g, "");
-            var string2 = JSON.stringify(data["translated"]).toUpperCase().trim().replace(/\"/g, "").replace(/\s+$/, "");
-            var is_equal = string1 === string2;
+            console.log("string1");
+            console.log(string1);
+
+            var string2 = JSON.stringify(data["user_voice"]).toUpperCase().trim().replace(/\"/g, "").replace(/\s+$/, "");
+            console.log("string2");
+            console.log(string2);
+
+            var is_equal = (string1 === string2);
+            console.log(is_equal);
             alert(is_equal);
 
         });
