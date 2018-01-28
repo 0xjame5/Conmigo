@@ -2,6 +2,7 @@
 import requests
 import shutil
 import json
+import sys
 
 WATSON_KEYS = {
   "url": "https://stream.watsonplatform.net/text-to-speech/api",
@@ -36,13 +37,16 @@ def text_to_speech(text):
     data = json.dumps({"text": text})
     output = requests.post(url=url, headers=headers, data=data, auth=auth)
 
-    fname = "{0}.wav".format(text)
+    fname = "{0}wav".format(text)
 
     with open(fname, 'wb') as f:
         f.write(output.content)
 
 def main():
-    text_to_speech("Buenos dias")
-
-    # TODO: PASS TO FRONTEND
+    with open("the_list.txt", 'r') as f:
+      for line in f:
+        line = line[:len(line) - 1]
+        text_to_speech(line)
+        print(line)
+        # break
 main()
