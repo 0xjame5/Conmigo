@@ -30,9 +30,11 @@ def transcribe(output_path, to_lang="es"):
         credentials_json=GOOGLE_CLOUD_SPEECH_CREDENTIALS
     )
 
-    print "Transcript:", text
-    with open("transcript.txt", "w") as f:
-        f.write(text.encode("utf-8"))
+    return text
+
+    # print "Transcript:", text
+    # with open("transcript.txt", "w") as f:
+    #     f.write(text.encode("utf-8"))
 
 
 if __name__ == '__main__':

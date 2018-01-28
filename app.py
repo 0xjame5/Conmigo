@@ -392,19 +392,13 @@ def leave_rooms(newroom, username):
 
 @app.route("/speech", methods=["GET", "POST"])
 def speech():
-
     result = request.files["file"]
-    output = {
-        "success": True,
-        "file_name": result.filename
-    }
-
     raw_file_name = secure_filename("raw.webm")
     result.save(raw_file_name)
 
-    process_audio.transcribe(raw_file_name.replace(".webm", ""))
+    output = process_audio.transcribe(raw_file_name.replace(".webm", ""))
 
-    return jsonify(output)
+    return jsonify(translated=output, success=True)
 
 
 if __name__ == "__main__":
