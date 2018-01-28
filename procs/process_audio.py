@@ -20,7 +20,6 @@ def transcribe(output_path, to_lang="es"):
 
     p.wait()
 
-
     print "Transcribing file..."
     recognizer = sr.Recognizer()
     with sr.AudioFile(output_path + ".wav") as source:
@@ -34,10 +33,6 @@ def transcribe(output_path, to_lang="es"):
     )
 
     return text
-
-    # print "Transcript:", text
-    # with open("transcript.txt", "w") as f:
-    #     f.write(text.encode("utf-8"))
 
 
 if __name__ == '__main__':

@@ -3,6 +3,9 @@ $.ajax({
     url: '/practice_questions'
 }).done(function(data) {
     console.log(data);
+    $("#images_holder").html("<img src=" + data["url"] + " alt='Mountain View' width='300px';>")
+    $("#keywords").html("<h1>" + data["keyword"] + "</h1>");
+    $("#keywords").html("<h1>" + data["keyword"] + "</h1>");
     $("#questions").html("<h2>" + data["translated"] + "</h2>");
     $("#translation").html("<h3>" + data["sentence"] + "</h3>");
 });

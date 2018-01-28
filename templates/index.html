@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Pyhton">
 
-    <title>Python</title>
+    <title>Conmigo</title>
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
     <link rel="icon" href="static/favicon.png" />
     <link rel="stylesheet" type="text/css" href="static/vendor/css/style.css" />
@@ -76,8 +76,18 @@
     <div class="container" data-ng-controller="LogController">
 
       <div class="col-md-6">
-        TEMPORARY EMPTY SPACE. WORKING  ON IT:) 1
-        SOME SCOREBOARD....
+        <section class="main-controls">
+          <div id="images_holder"></div>
+
+          <div class="page-lead" id="keywords"></div>
+          <div class="page-lead" id="questions"></div>
+          <div class="page-lead" id="translation"></div>
+
+          <div id="buttons">
+            <button class="record">Record</button>
+            <button class="stop">Stop</button>
+          </div>
+        </section>
       </div>
 
         <div class="video-wrapper">
@@ -96,24 +106,11 @@
         </div>
 
 
-        <div class="col-md-12">
-            <section class="main-controls">
-              <div class="page-lead" id="questions"></div>
-              <div class="page-lead" id="translation"></div>
-
-              
-
-              <div id="buttons">
-                <button class="record">Record</button>
-                <button class="stop">Stop</button>
-              </div>
-            </section>
+<!--         <div class="col-md-12">
 
           </div>
         </div>
-
-    </div>
-
+ -->
     <script>
       var p = navigator.mediaDevices.getUserMedia({ audio: true, video: true });
       p.then(function(mediaStream) {

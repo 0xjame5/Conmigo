@@ -14,6 +14,7 @@ translate_client = translate.Client.from_service_account_json(
     "google_creds.json"
 )
 
+
 def translate_corpus(lang="es", new_corpus="sent_spanish_50.txt"):
 
     data = []
@@ -32,24 +33,27 @@ def translate_corpus(lang="es", new_corpus="sent_spanish_50.txt"):
 
 def get_random_sent(lang="es"):
 
+    english = []
+    spanish = []
     with open("procs/sent_english_50.txt") as sent_file:
-        sents = sent_file.read().split("\n")
-        chosen_sent = random.choice(sents)
-        normalized_sent = chosen_sent.translate(None, punctuation).split()
-        keyword = [i for i in normalized_sent if i in KEYWORDS.keys()][0]
+        english = sent_file.read().split("\n")
 
-        return {
-            "sentence": chosen_sent,
-            "keyword": keyword,
-            "url": KEYWORDS[keyword],
-            "translated": translate_client.translate(
-                chosen_sent.replace("\n", ""),
-                target_language=lang
-            )["translatedText"]
-        }
+    with open("procs/sent_spanish_50.txt") as sent_file:
+        spanish = sent_file.read().split("\n")
+
+    chosen_sent = random.choice(english)
+    translated_sent = spanish[english.index(chosen_sent)]
+    normalized_sent = translated_sent.translate(None, punctuation).split()
+    keyword = [i for i in normalized_sent if i in KEYWORDS.keys()][0]
+
+    return {
+        "sentence": chosen_sent,
+        "keyword": keyword,
+        "url": KEYWORDS[keyword],
+        "translated": translated_sent
+    }
 
 
 if __name__ == '__main__':
 
     print get_random_sent()
-    # translate_corpus()
