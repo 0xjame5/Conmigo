@@ -399,13 +399,10 @@ def speech():
         "file_name": result.filename
     }
 
-    raw_file_name = path.join("procs", secure_filename("raw.wav"))
-    # output_name = path.join("procs", secure_filename("raw.wav"))
-
+    raw_file_name = secure_filename("raw.webm")
     result.save(raw_file_name)
 
-    # process_audio.split_recording(raw_file_name, output_name)
-    process_audio.transcribe(raw_file_name)
+    process_audio.transcribe(raw_file_name.replace(".webm", ""))
 
     return jsonify(output)
 
